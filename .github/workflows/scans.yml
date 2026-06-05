@@ -83,7 +83,15 @@ jobs:
         with:
           name: megalinter-reports-${{ matrix.flavor }}
           path: megalinter-reports
-      - if: ${{ (success() || failure()) && hashFiles('megalinter-reports/megalinter-report.sarif') != '' }}
+      - if: ${{ success() || failure() }}
+        id: sarif-check
+        name: check SARIF has results
+        run: |
+          SARIF="megalinter-reports/megalinter-report.sarif"
+          if [ -f "$SARIF" ] && jq -e '.runs[].results | length > 0' "$SARIF" > /dev/null 2>&1; then
+            echo "has_results=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: ${{ (success() || failure()) && steps.sarif-check.outputs.has_results == 'true' }}
         uses: github/codeql-action/upload-sarif@87557b9c84dde89fdd9b10e88954ac2f4248e463 # v4
         with:
           sarif_file: megalinter-reports/megalinter-report.sarif
