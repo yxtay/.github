@@ -13,21 +13,6 @@ and community health files. See `README.md` for project overview.
   When changes affect agent workflow rules, update `AGENTS.md`.
 - Keep both files accurate and current.
 
-## Repo structure
-
-```text
-.github/
-├── CODEOWNERS
-├── dependabot.yml
-├── labeler.yml
-├── release.yml
-└── workflows/
-    ├── automerge.yml
-    ├── ossf.yml
-    ├── pr.yml
-    └── scans.yml
-```
-
 ## Workflow conventions
 
 ### Action pinning
