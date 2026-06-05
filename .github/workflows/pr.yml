@@ -1,13 +1,17 @@
 name: pr
+
 on:
   pull_request:
     types: [opened, synchronize, reopened, edited]
     branches: [main]
   workflow_call:
+
 permissions: {}
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.ref_name != github.event.repository.default_branch }}
+
 jobs:
   lint-title:
     if: ${{ github.event_name == 'pull_request' }}
@@ -18,6 +22,7 @@ jobs:
       - uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50 # v6
         env:
           GITHUB_TOKEN: ${{ github.token }}
+
   label:
     if: ${{ github.event_name == 'pull_request' }}
     permissions:
@@ -27,6 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/labeler@f27b608878404679385c85cfa523b85ccb86e213 # v6
+
   label-size:
     if: ${{ github.event_name == 'pull_request' }}
     permissions:
