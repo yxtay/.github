@@ -1,20 +1,37 @@
 # .github
 
-Organisation-wide default community health files and reusable GitHub Actions workflows.
+Organisation-wide default community health files, reusable GitHub Actions workflows,
+and shared config templates.
 
 ## Community health files
 
-| File                     | Purpose                                      |
-|--------------------------|----------------------------------------------|
-| `.github/CODEOWNERS`     | Default code owners (`@yxtay`)               |
-| `.github/dependabot.yml` | Dependabot config for GitHub Actions updates |
-| `.github/labeler.yml`    | PR labeling rules based on branch naming     |
-| `.github/release.yml`    | GitHub Release changelog categories          |
+| File                     | Purpose                                          |
+|--------------------------|--------------------------------------------------|
+| `.github/CODEOWNERS`     | Default code owners (`@yxtay`)                   |
+| `.github/dependabot.yml` | Dependabot config (docker, compose, actions, uv) |
+| `.github/labeler.yml`    | PR labeling rules based on branch naming         |
+| `.github/release.yml`    | GitHub Release changelog categories              |
 
 > **Note:** GitHub does not inherit `CODEOWNERS` or `labeler.yml`
 > from the org `.github` repo.
 > These are stored here as canonical source of truth.
 > Each repo keeps its own copy.
+
+## Shared config templates
+
+Root-level config files to copy into new repos.
+These are the canonical superset — repos may trim
+entries that don't apply (e.g., remove `uv` from dependabot
+if not a Python project).
+
+| File                       | Purpose                                   |
+|----------------------------|-------------------------------------------|
+| `.editorconfig`            | Editor formatting (indent, EOL, charset)  |
+| `.markdownlint.json`       | Markdown lint rules (120 char line width) |
+| `.mega-linter.yml`         | MegaLinter config (disabled linters, args)|
+| `.pre-commit-config.yaml`  | Pre-commit hooks (superset of all repos)  |
+| `.yamlfmt`                 | YAML formatter config                     |
+| `renovate.json`            | Renovate bot config (automerge, security) |
 
 ## Reusable workflows
 
