@@ -5,7 +5,7 @@ Organisation-wide default community health files and reusable GitHub Actions wor
 ## Community health files
 
 | File                     | Purpose                                      |
-| ------------------------ | -------------------------------------------- |
+|--------------------------|----------------------------------------------|
 | `.github/CODEOWNERS`     | Default code owners (`@yxtay`)               |
 | `.github/dependabot.yml` | Dependabot config for GitHub Actions updates |
 | `.github/labeler.yml`    | PR labeling rules based on branch naming     |
@@ -23,12 +23,12 @@ All workflows run in this repo directly
 (push, PR, merge_group, workflow_dispatch)
 and are also callable from other repos via `workflow_call`.
 
-| Workflow         | Description                                          |
-| ---------------- | ---------------------------------------------------- |
-| `automerge.yml`  | Auto-merge dependabot and pre-commit-ci PRs          |
-| `pr.yml`         | Lint PR title (conventional commits), apply labels   |
-| `ossf.yml`       | OpenSSF Scorecard security scan                      |
-| `scans.yml`      | MegaLinter security and formatters scans             |
+| Workflow        | Description                                        |
+|-----------------|----------------------------------------------------|
+| `automerge.yml` | Auto-merge dependabot and pre-commit-ci PRs        |
+| `pr.yml`        | Lint PR title (conventional commits), apply labels |
+| `ossf.yml`      | OpenSSF Scorecard security scan                    |
+| `scans.yml`     | MegaLinter security and formatters scans           |
 
 ### Calling from other repos
 
