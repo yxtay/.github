@@ -1,11 +1,7 @@
 name: pr
 on:
-  push:
-    branches: [main]
   pull_request:
     types: [opened, synchronize, reopened, edited]
-    branches: [main]
-  merge_group:
     branches: [main]
   workflow_call:
   workflow_dispatch:
