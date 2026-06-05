@@ -11,6 +11,7 @@ concurrency:
   cancel-in-progress: ${{ github.ref_name != github.event.repository.default_branch }}
 jobs:
   lint-title:
+    if: ${{ github.event_name == 'pull_request' }}
     permissions:
       pull-requests: read
     runs-on: ubuntu-latest
@@ -19,6 +20,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
   label:
+    if: ${{ github.event_name == 'pull_request' }}
     permissions:
       contents: read
       issues: write
@@ -27,6 +29,7 @@ jobs:
     steps:
       - uses: actions/labeler@f27b608878404679385c85cfa523b85ccb86e213 # v6
   label-size:
+    if: ${{ github.event_name == 'pull_request' }}
     permissions:
       contents: read
       issues: write
