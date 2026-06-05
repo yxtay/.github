@@ -4,7 +4,6 @@ on:
     types: [opened, synchronize, reopened, edited]
     branches: [main]
   workflow_call:
-  workflow_dispatch:
 permissions: {}
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
