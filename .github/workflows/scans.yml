@@ -41,6 +41,8 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: ${{ github.event_name == 'pull_request' }} # zizmor: ignore[artipacked]
           fetch-depth: (${{ github.event.pull_request.commits || 2 }} + 1)
+      - name: copy event file
+        run: cp "$GITHUB_EVENT_PATH" "$GITHUB_WORKSPACE/event.json"
       - name: megalinter
         run: |
           docker run --rm \
@@ -49,20 +51,39 @@ jobs:
             -e DEFAULT_WORKSPACE=/tmp/lint \
             -e VALIDATE_ALL_CODEBASE \
             -e DISABLE_ERRORS \
-            -e GITHUB_TOKEN \
             -e SARIF_REPORTER=true \
+            -e GITHUB_TOKEN \
+            -e GITHUB_ACTIONS=true \
+            -e GITHUB_EVENT_NAME \
+            -e GITHUB_EVENT_PATH=/tmp/lint/event.json \
+            -e GITHUB_REPOSITORY \
+            -e GITHUB_SHA \
+            -e GITHUB_REF \
+            -e GITHUB_RUN_ID \
+            -e GITHUB_SERVER_URL \
+            -e GITHUB_API_URL \
             "ghcr.io/oxsecurity/megalinter${FLAVOR_SUFFIX}:v9.5.0"
         env:
           VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
           DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
           GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          GITHUB_REF: ${{ github.ref }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+          GITHUB_API_URL: ${{ github.api_url }}
           FLAVOR_SUFFIX: ${{ matrix.flavor == 'all' && '' || format('-{0}', matrix.flavor) }}
+      - if: ${{ success() || failure() }}
+        name: fix report permissions
+        run: sudo chown -R "$(id -u):$(id -g)" megalinter-reports || true
       - if: ${{ success() || failure() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: megalinter-reports-${{ matrix.flavor }}
           path: megalinter-reports
-      - if: ${{ success() || failure() }}
+      - if: ${{ (success() || failure()) && hashFiles('megalinter-reports/megalinter-report.sarif') != '' }}
         uses: github/codeql-action/upload-sarif@87557b9c84dde89fdd9b10e88954ac2f4248e463 # v4
         with:
           sarif_file: megalinter-reports/megalinter-report.sarif
