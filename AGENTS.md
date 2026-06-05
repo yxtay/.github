@@ -47,13 +47,25 @@ Never use tag-only refs (`@v6`). Dependabot updates SHAs automatically.
 
 ### Triggers
 
-All workflows include `workflow_call` (reusable) and `workflow_dispatch` (manual).
+All workflows include `workflow_call` (reusable).
 Event triggers vary by workflow purpose:
 
-- CI/scan workflows: push, pull_request, merge_group
+- CI/scan workflows: push, pull_request, merge_group, workflow_dispatch
 - PR-specific workflows (pr, automerge): pull_request only
 
 `workflow_call` makes them reusable by other repos.
+
+### Key ordering
+
+Consistent ordering across all workflows:
+
+**Top-level:** `name` → `on` → `permissions` → `concurrency` → `jobs`
+
+**Triggers:** `push` → `pull_request` → `merge_group` → `workflow_call` → `workflow_dispatch`
+
+**Jobs:** `if` → `permissions` → `runs-on` → `steps`
+
+**Steps:** `id` → `if` → `name` → `uses`/`run` → `with`/`env`
 
 ### Security
 
