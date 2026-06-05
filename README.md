@@ -45,7 +45,7 @@ and are also callable from other repos via `workflow_call`.
 | `automerge.yml` | Auto-merge dependabot and pre-commit-ci PRs        |
 | `pr.yml`        | Lint PR title (conventional commits), apply labels |
 | `ossf.yml`      | OpenSSF Scorecard security scan                    |
-| `scans.yml`     | MegaLinter security and formatters scans           |
+| `scans.yml`     | MegaLinter scans (configurable flavors via input)  |
 
 ### Calling from other repos
 
@@ -100,8 +100,19 @@ jobs:
 
 ### MegaLinter flavors
 
-The reusable `scans.yml` uses
-`oxsecurity/megalinter/flavors/security` and
-`oxsecurity/megalinter/flavors/formatters`.
-Repos needing a different flavor should keep their own
-`scans.yml` or configure via `.mega-linter.yml`.
+The reusable `scans.yml` runs megalinter via a matrix job.
+Default flavors: `security`, `formatters`.
+Callers can override via input:
+
+```yaml
+jobs:
+  scans:
+    uses: yxtay/.github/.github/workflows/scans.yml@main
+    with:
+      flavors: '["security", "python", "go"]'
+```
+
+Supported flavors: `all`, `c_cpp`, `ci_light`, `cupcake`,
+`documentation`, `dotnet`, `dotnetweb`, `formatters`, `go`,
+`java`, `javascript`, `php`, `python`, `ruby`, `rust`,
+`salesforce`, `security`, `swift`, `terraform`.
