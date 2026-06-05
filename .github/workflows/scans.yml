@@ -41,120 +41,22 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: ${{ github.event_name == 'pull_request' }} # zizmor: ignore[artipacked]
           fetch-depth: (${{ github.event.pull_request.commits || 2 }} + 1)
-      - if: matrix.flavor == 'all'
-        uses: oxsecurity/megalinter@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
+      - name: megalinter
+        run: |
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock:rw \
+            -v "$GITHUB_WORKSPACE:/tmp/lint" \
+            -e DEFAULT_WORKSPACE=/tmp/lint \
+            -e VALIDATE_ALL_CODEBASE \
+            -e DISABLE_ERRORS \
+            -e GITHUB_TOKEN \
+            -e SARIF_REPORTER=true \
+            "ghcr.io/oxsecurity/megalinter${FLAVOR_SUFFIX}:v9.5.0"
         env:
           VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
           DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
           GITHUB_TOKEN: ${{ github.token }}
-      - if: matrix.flavor == 'c_cpp'
-        uses: oxsecurity/megalinter/flavors/c_cpp@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
-        env:
-          VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
-          DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
-          GITHUB_TOKEN: ${{ github.token }}
-      - if: matrix.flavor == 'ci_light'
-        uses: oxsecurity/megalinter/flavors/ci_light@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
-        env:
-          VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
-          DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
-          GITHUB_TOKEN: ${{ github.token }}
-      - if: matrix.flavor == 'cupcake'
-        uses: oxsecurity/megalinter/flavors/cupcake@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
-        env:
-          VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
-          DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
-          GITHUB_TOKEN: ${{ github.token }}
-      - if: matrix.flavor == 'documentation'
-        uses: oxsecurity/megalinter/flavors/documentation@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
-        env:
-          VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
-          DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
-          GITHUB_TOKEN: ${{ github.token }}
-      - if: matrix.flavor == 'dotnet'
-        uses: oxsecurity/megalinter/flavors/dotnet@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
-        env:
-          VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
-          DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
-          GITHUB_TOKEN: ${{ github.token }}
-      - if: matrix.flavor == 'dotnetweb'
-        uses: oxsecurity/megalinter/flavors/dotnetweb@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
-        env:
-          VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
-          DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
-          GITHUB_TOKEN: ${{ github.token }}
-      - if: matrix.flavor == 'formatters'
-        uses: oxsecurity/megalinter/flavors/formatters@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
-        env:
-          VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
-          DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
-          GITHUB_TOKEN: ${{ github.token }}
-      - if: matrix.flavor == 'go'
-        uses: oxsecurity/megalinter/flavors/go@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
-        env:
-          VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
-          DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
-          GITHUB_TOKEN: ${{ github.token }}
-      - if: matrix.flavor == 'java'
-        uses: oxsecurity/megalinter/flavors/java@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
-        env:
-          VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
-          DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
-          GITHUB_TOKEN: ${{ github.token }}
-      - if: matrix.flavor == 'javascript'
-        uses: oxsecurity/megalinter/flavors/javascript@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
-        env:
-          VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
-          DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
-          GITHUB_TOKEN: ${{ github.token }}
-      - if: matrix.flavor == 'php'
-        uses: oxsecurity/megalinter/flavors/php@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
-        env:
-          VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
-          DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
-          GITHUB_TOKEN: ${{ github.token }}
-      - if: matrix.flavor == 'python'
-        uses: oxsecurity/megalinter/flavors/python@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
-        env:
-          VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
-          DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
-          GITHUB_TOKEN: ${{ github.token }}
-      - if: matrix.flavor == 'ruby'
-        uses: oxsecurity/megalinter/flavors/ruby@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
-        env:
-          VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
-          DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
-          GITHUB_TOKEN: ${{ github.token }}
-      - if: matrix.flavor == 'rust'
-        uses: oxsecurity/megalinter/flavors/rust@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
-        env:
-          VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
-          DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
-          GITHUB_TOKEN: ${{ github.token }}
-      - if: matrix.flavor == 'salesforce'
-        uses: oxsecurity/megalinter/flavors/salesforce@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
-        env:
-          VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
-          DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
-          GITHUB_TOKEN: ${{ github.token }}
-      - if: matrix.flavor == 'security'
-        uses: oxsecurity/megalinter/flavors/security@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
-        env:
-          VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
-          DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
-          GITHUB_TOKEN: ${{ github.token }}
-      - if: matrix.flavor == 'swift'
-        uses: oxsecurity/megalinter/flavors/swift@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
-        env:
-          VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
-          DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
-          GITHUB_TOKEN: ${{ github.token }}
-      - if: matrix.flavor == 'terraform'
-        uses: oxsecurity/megalinter/flavors/terraform@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
-        env:
-          VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
-          DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
-          GITHUB_TOKEN: ${{ github.token }}
+          FLAVOR_SUFFIX: ${{ matrix.flavor == 'all' && '' || format('-{0}', matrix.flavor) }}
       - if: ${{ success() || failure() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
