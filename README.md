@@ -24,14 +24,14 @@ These are the canonical superset — repos may trim
 entries that don't apply (e.g., remove `uv` from dependabot
 if not a Python project).
 
-| File                       | Purpose                                   |
-|----------------------------|-------------------------------------------|
-| `.editorconfig`            | Editor formatting (indent, EOL, charset)  |
-| `.markdownlint.json`       | Markdown lint rules (120 char line width) |
-| `.mega-linter.yml`         | MegaLinter config (disabled linters, args)|
-| `.pre-commit-config.yaml`  | Pre-commit hooks (superset of all repos)  |
-| `.yamlfmt`                 | YAML formatter config                     |
-| `renovate.json`            | Renovate bot config (automerge, security) |
+| File                      | Purpose                                    |
+|---------------------------|--------------------------------------------|
+| `.editorconfig`           | Editor formatting (indent, EOL, charset)   |
+| `.markdownlint.json`      | Markdown lint rules (120 char line width)  |
+| `.mega-linter.yml`        | MegaLinter config (disabled linters, args) |
+| `.pre-commit-config.yaml` | Pre-commit hooks (superset of all repos)   |
+| `.yamlfmt`                | YAML formatter config                      |
+| `renovate.json`           | Renovate bot config (automerge, security)  |
 
 ## Reusable workflows
 
