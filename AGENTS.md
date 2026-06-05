@@ -15,7 +15,7 @@ and community health files. See `README.md` for project overview.
 
 ## Repo structure
 
-```
+```text
 .github/
 ├── CODEOWNERS
 ├── dependabot.yml
@@ -92,7 +92,8 @@ All workflows use:
 ```yaml
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref_name != github.event.repository.default_branch }}
+  cancel-in-progress: >-
+    ${{ github.ref_name != github.event.repository.default_branch }}
 ```
 
 ## Editing rules
