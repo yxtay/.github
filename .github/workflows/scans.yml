@@ -8,6 +8,10 @@ on:
     branches: [main]
   workflow_call:
     inputs:
+      run-all:
+        required: false
+        type: boolean
+        default: false
       run-documentation:
         required: false
         type: boolean
@@ -26,6 +30,10 @@ on:
         default: true
   workflow_dispatch:
     inputs:
+      run-all:
+        required: false
+        type: boolean
+        default: false
       run-documentation:
         required: false
         type: boolean
@@ -50,7 +58,7 @@ concurrency:
 
 jobs:
   megalinter-all:
-    if: ${{ inputs.run-documentation }}
+    if: ${{ inputs.run-all }}
     permissions:
       contents: write
       pull-requests: write
@@ -66,7 +74,7 @@ jobs:
           fetch-depth: (${{ github.event.pull_request.commits || 2 }} + 1)
       - id: megalinter
         # nosemgrep
-        uses: oxsecurity/megalinter/flavors/documentation@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
+        uses: oxsecurity/megalinter@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
         env:
           VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
           DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
@@ -75,7 +83,7 @@ jobs:
         # nosemgrep
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: megalinter-reports-documentation
+          name: megalinter-reports
           path: megalinter-reports
       - if: ${{ steps.megalinter.outputs.has_updated_sources == 1 && github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork }}
         name: commit changes
