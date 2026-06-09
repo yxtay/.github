@@ -12,6 +12,10 @@ on:
         required: false
         type: boolean
         default: false
+      run-ci_light:
+        required: false
+        type: boolean
+        default: false
       run-documentation:
         required: false
         type: boolean
@@ -31,6 +35,10 @@ on:
   workflow_dispatch:
     inputs:
       run-all:
+        required: false
+        type: boolean
+        default: false
+      run-ci_light:
         required: false
         type: boolean
         default: false
@@ -84,6 +92,46 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: megalinter-reports-all
+          path: megalinter-reports
+      - if: ${{ steps.megalinter.outputs.has_updated_sources == 1 && github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork }}
+        name: commit changes
+        run: |
+          git config user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
+          git config user.name "${GITHUB_ACTOR}"
+          git commit --all --message "${COMMIT_MESSAGE}"
+          git push origin "HEAD:refs/heads/${GITHUB_HEAD_REF}"
+        env:
+          COMMIT_MESSAGE: "fix: apply megalinter fixes"
+          GITHUB_ACTOR: megalinter-bot
+          GITHUB_ACTOR_ID: 129584137
+
+  megalinter-ci_light:
+    if: ${{ inputs.run-ci_light }}
+    permissions:
+      contents: write
+      pull-requests: write
+      statuses: write
+    runs-on: ubuntu-latest
+    steps:
+      # nosemgrep
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: ${{ github.event_name == 'pull_request' }} # zizmor: ignore[artipacked]
+          fetch-depth: (${{ github.event.pull_request.commits || 2 }} + 1)
+      - id: megalinter
+        # nosemgrep
+        uses: oxsecurity/megalinter/flavors/ci_light@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9
+        env:
+          VALIDATE_ALL_CODEBASE: ${{ github.ref_name != github.event.repository.default_branch }}
+          DISABLE_ERRORS: ${{ github.ref_name != github.event.repository.default_branch }}
+          GITHUB_TOKEN: ${{ github.token }}
+      - if: ${{ success() || failure() }}
+        # nosemgrep
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: megalinter-reports-ci_light
           path: megalinter-reports
       - if: ${{ steps.megalinter.outputs.has_updated_sources == 1 && github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork }}
         name: commit changes
