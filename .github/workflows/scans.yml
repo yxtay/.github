@@ -15,7 +15,7 @@ on:
       run-ci_light:
         required: false
         type: boolean
-        default: false
+        default: true
       run-documentation:
         required: false
         type: boolean
@@ -41,7 +41,7 @@ on:
       run-ci_light:
         required: false
         type: boolean
-        default: false
+        default: true
       run-documentation:
         required: false
         type: boolean
@@ -106,7 +106,7 @@ jobs:
           GITHUB_ACTOR_ID: 129584137
 
   megalinter-ci_light:
-    if: ${{ inputs.run-ci_light }}
+    if: ${{ !contains(fromJSON('["workflow_call", "workflow_dispatch"]'), github.event_name) || inputs.run-ci_light }}
     permissions:
       contents: write
       pull-requests: write
