@@ -106,7 +106,7 @@ jobs:
           GITHUB_ACTOR_ID: 129584137
 
   megalinter-ci_light:
-    if: ${{ !contains(fromJSON('["workflow_call", "workflow_dispatch"]'), github.event_name) || inputs.run-ci_light }}
+    if: ${{ inputs.run-ci_light != false }}
     permissions:
       contents: write
       pull-requests: write
@@ -186,7 +186,7 @@ jobs:
           GITHUB_ACTOR_ID: 129584137
 
   megalinter-formatters:
-    if: ${{ !contains(fromJSON('["workflow_call", "workflow_dispatch"]'), github.event_name) || inputs.run-formatters }}
+    if: ${{ inputs.run-formatters != false }}
     permissions:
       contents: write
       pull-requests: write
@@ -266,7 +266,7 @@ jobs:
           GITHUB_ACTOR_ID: 129584137
 
   megalinter-security:
-    if: ${{ !contains(fromJSON('["workflow_call", "workflow_dispatch"]'), github.event_name) || inputs.run-security }}
+    if: ${{ inputs.run-security != false }}
     permissions:
       contents: write
       pull-requests: write
