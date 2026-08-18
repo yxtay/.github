@@ -17,7 +17,7 @@
     "automerge": true,
     "enabled": true,
     "labels": ["security"],
-    "minimumReleaseAge": false
+    "minimumReleaseAge": "0 days"
   },
   "pre-commit": {
     "enabled": true
