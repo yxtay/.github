@@ -1,4 +1,4 @@
-name: scans
+name: megalinter
 on:
   push:
     branches: [main]
@@ -106,7 +106,7 @@ jobs:
           GITHUB_ACTOR_ID: 129584137
 
   megalinter-ci_light:
-    if: ${{ inputs.run-ci_light != false }}
+    if: ${{ github.event_name != 'workflow_call' || inputs.run-ci_light != false }}
     permissions:
       contents: write
       pull-requests: write
@@ -186,7 +186,7 @@ jobs:
           GITHUB_ACTOR_ID: 129584137
 
   megalinter-formatters:
-    if: ${{ inputs.run-formatters != false }}
+    if: ${{ github.event_name != 'workflow_call' || inputs.run-formatters != false }}
     permissions:
       contents: write
       pull-requests: write
@@ -266,7 +266,7 @@ jobs:
           GITHUB_ACTOR_ID: 129584137
 
   megalinter-security:
-    if: ${{ inputs.run-security != false }}
+    if: ${{ github.event_name != 'workflow_call' || inputs.run-security != false }}
     permissions:
       contents: write
       pull-requests: write
