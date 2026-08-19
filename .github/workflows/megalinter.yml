@@ -106,7 +106,7 @@ jobs:
           GITHUB_ACTOR_ID: 129584137
 
   ci_light:
-    if: ${{ !contains(fromJSON('["workflow_call","workflow_dispatch"]'), github.event_name) || inputs.run-ci_light != false }}
+    if: ${{ inputs.run-ci_light == '' || inputs.run-ci_light }}
     permissions:
       contents: write
       pull-requests: write
@@ -186,7 +186,7 @@ jobs:
           GITHUB_ACTOR_ID: 129584137
 
   formatters:
-    if: ${{ !contains(fromJSON('["workflow_call","workflow_dispatch"]'), github.event_name) || inputs.run-formatters != false }}
+    if: ${{ inputs.run-formatters == '' || inputs.run-formatters }}
     permissions:
       contents: write
       pull-requests: write
@@ -266,7 +266,7 @@ jobs:
           GITHUB_ACTOR_ID: 129584137
 
   security:
-    if: ${{ !contains(fromJSON('["workflow_call","workflow_dispatch"]'), github.event_name) || inputs.run-security != false }}
+    if: ${{ inputs.run-security == '' || inputs.run-security }}
     permissions:
       contents: write
       pull-requests: write
