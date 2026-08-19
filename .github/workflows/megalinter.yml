@@ -65,7 +65,7 @@ concurrency:
   cancel-in-progress: ${{ github.ref_name != github.event.repository.default_branch }}
 
 jobs:
-  megalinter-all:
+all:
     if: ${{ inputs.run-all }}
     permissions:
       contents: write
@@ -105,8 +105,8 @@ jobs:
           GITHUB_ACTOR: megalinter-bot
           GITHUB_ACTOR_ID: 129584137
 
-  megalinter-ci_light:
-    if: ${{ github.event_name != 'workflow_call' || inputs.run-ci_light != false }}
+  ci_light:
+    if: ${{ inputs.run-ci_light != false }}
     permissions:
       contents: write
       pull-requests: write
@@ -145,7 +145,7 @@ jobs:
           GITHUB_ACTOR: megalinter-bot
           GITHUB_ACTOR_ID: 129584137
 
-  megalinter-documentation:
+  documentation:
     if: ${{ inputs.run-documentation }}
     permissions:
       contents: write
@@ -185,8 +185,8 @@ jobs:
           GITHUB_ACTOR: megalinter-bot
           GITHUB_ACTOR_ID: 129584137
 
-  megalinter-formatters:
-    if: ${{ github.event_name != 'workflow_call' || inputs.run-formatters != false }}
+  formatters:
+    if: ${{ inputs.run-formatters != false }}
     permissions:
       contents: write
       pull-requests: write
@@ -225,7 +225,7 @@ jobs:
           GITHUB_ACTOR: megalinter-bot
           GITHUB_ACTOR_ID: 129584137
 
-  megalinter-python:
+  python:
     if: ${{ inputs.run-python }}
     permissions:
       contents: write
@@ -265,8 +265,8 @@ jobs:
           GITHUB_ACTOR: megalinter-bot
           GITHUB_ACTOR_ID: 129584137
 
-  megalinter-security:
-    if: ${{ github.event_name != 'workflow_call' || inputs.run-security != false }}
+  security:
+    if: ${{ inputs.run-security != false }}
     permissions:
       contents: write
       pull-requests: write
