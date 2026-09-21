@@ -33,16 +33,16 @@ repos:
     hooks:
       - id: actionlint
   - repo: https://github.com/editorconfig-checker/editorconfig-checker
-    rev: v4.0.1
+    rev: v4.0.2
     hooks:
       - id: editorconfig-checker
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.23.2
+    rev: v0.23.3
     hooks:
       - id: markdownlint-cli2
         args: [--fix]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.7
+    rev: v0.16.8
     hooks:
       - id: ruff
         types_or: [python, pyi, jupyter]
@@ -59,7 +59,7 @@ repos:
     hooks:
       - id: taplo-format
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.12.13
+    rev: 0.12.17
     hooks:
       - id: uv-lock
   - repo: https://github.com/google/yamlfmt
